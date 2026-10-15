@@ -46,7 +46,7 @@ namespace Dungeon_Crawler
                     }
                     if (symbol == 's')
                     {
-                        Snake snake = new Snake();
+                        Snake snake = new Snake(this);
                         snake.X = j;
                         snake.Y = i;
                         elements.Add(snake);
@@ -65,6 +65,17 @@ namespace Dungeon_Crawler
         public List<LevelElement> Elements
         {
             get { return elements; }
+        }
+
+        public void SetPlayerForSnakes(Player player)
+        {
+            foreach (LevelElement element in elements)
+            {
+                if (element is Snake snake)
+                {
+                    snake.setPlayer(player);
+                }
+            }
         }
 
         public bool WallAhead(int newX, int newY)

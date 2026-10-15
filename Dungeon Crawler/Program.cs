@@ -12,6 +12,7 @@ foreach(LevelElement element in levelData.Elements)
 }
 
 Player player = new Player();
+levelData.SetPlayerForSnakes(player);
 
 player.X = levelData.PlayerStartX;
 player.Y = levelData.PlayerStartY;
@@ -41,8 +42,15 @@ while (true)
             break;                
     }
     bool wallAhead = false;
-    foreach(LevelElement element in levelData.Elements)
-    {
+    bool enemyAhead = false;
+    foreach(LevelElement element in levelData.Elements) 
+    { 
+    
+        if (element is Enemy && element.X == newX && element.Y == newY)
+        {
+            enemyAhead = true;
+        }
+    
         if (element is Wall && element.X==newX && element.Y == newY)
         {
             wallAhead = true;
@@ -50,13 +58,15 @@ while (true)
         }
     }
 
-    if (!wallAhead)
+    if (!wallAhead && !enemyAhead)
     {
         Console.SetCursorPosition(player.X, player.Y);
         Console.Write(' ' );
 
         player.X = newX;
         player.Y = newY;
+
+        levelData.SetPlayerForSnakes(player);
         player.Draw();
 
     }
