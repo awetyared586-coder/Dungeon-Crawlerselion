@@ -6,17 +6,17 @@ using Dungeon_Crawler.Models;
 LevelData levelData = new LevelData();
 levelData.Load("Level1.txt");
 
-foreach(LevelElement element in levelData.Elements)
-{
-    element.Draw();
-}
-
 Player player = new Player();
-levelData.SetPlayerForSnakes(player);
-
 player.X = levelData.PlayerStartX;
 player.Y = levelData.PlayerStartY;
 
+foreach (LevelElement element in levelData.Elements)
+{
+    if (element is Wall || levelData.IsVisible(element, player))
+        element.Draw();
+}
+
+levelData.SetPlayerForSnakes(player);
 player.Draw();
 
 while (true)
@@ -43,12 +43,14 @@ while (true)
     }
     bool wallAhead = false;
     bool enemyAhead = false;
+    Enemy targetEnemy = null;
     foreach(LevelElement element in levelData.Elements) 
     { 
     
-        if (element is Enemy && element.X == newX && element.Y == newY)
+        if (element is Enemy enemy && element.X == newX && element.Y == newY)
         {
             enemyAhead = true;
+            targetEnemy = enemy;
         }
     
         if (element is Wall && element.X==newX && element.Y == newY)
@@ -56,6 +58,10 @@ while (true)
             wallAhead = true;
             break;
         }
+    }
+    if (enemyAhead && targetEnemy != null)
+    {
+        player.AttackEnemy(targetEnemy);
     }
 
     if (!wallAhead && !enemyAhead)
@@ -70,14 +76,30 @@ while (true)
         player.Draw();
 
     }
-    foreach (Enemy enemy in levelData.Elements.OfType<Enemy>())
+    foreach (Enemy enemy in levelData.Elements.OfType<Enemy>().ToList())
+    {
+
+    if (enemy.IsDead())
+    
     {
         Console.SetCursorPosition(enemy.X, enemy.Y);
         Console.Write(' ');
-        enemy.Update();
-        enemy.Draw();
+        levelData.Elements.Remove(enemy);
+        continue;
     }
 
-}
+
+        Console.SetCursorPosition(enemy.X, enemy.Y);
+        Console.Write(' ' );
+
+
+        enemy.Update();
+        enemy.Draw();
+
+    }
+ }
+
+    
+
  
 

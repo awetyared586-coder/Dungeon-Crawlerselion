@@ -12,11 +12,36 @@ namespace Dungeon_Crawler.Models
        public int SidePerDice { get; set; }
        public int Modifier { get; set; }
         
-        public Dice(int NumberOfDice, int SidePerDice, int Modifier)
+        public Dice(int numberOfDice, int SidePerDice, int Modifier)
         {
-            this.NumberOfDice = NumberOfDice;
+            this.NumberOfDice = numberOfDice;
             this.SidePerDice = SidePerDice;
             this.Modifier = Modifier;
+            
+            
         }
-    }
+
+        public int Throw()
+        {
+            Random random = new Random();
+
+            int total = 0;
+
+            for(int i =0; i < NumberOfDice; i++)
+            {
+                total += random.Next(1, SidePerDice + 1);
+            }
+
+            return total + Modifier;
+            
+        }
+
+        public override string ToString()
+        {
+            return $"{NumberOfDice}d{SidePerDice}+{Modifier}";
+        }
+       
+    }    
+   
 }
+    

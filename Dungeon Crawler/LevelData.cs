@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace Dungeon_Crawler
 {
     internal class LevelData
     {
         private List<LevelElement> elements = new List<LevelElement>();
+        private HashSet<(int, int)> discoveredWalls = new HashSet<(int, int)>();
 
         public int PlayerStartX { get; private set; }
         public int PlayerStartY { get; private set; }
@@ -75,6 +77,10 @@ namespace Dungeon_Crawler
                 {
                     snake.setPlayer(player);
                 }
+                if (element is Rat rat)
+                {
+                    rat.SrtPlayer(player);
+                }
             }
         }
 
@@ -92,5 +98,39 @@ namespace Dungeon_Crawler
 
             return false;
         }
+
+        public bool IsOccupied(int x, int y)
+        {
+            foreach(LevelElement element in Elements)
+            {
+                if  (element.X== x && element.Y== y)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        public bool PlayerAhead(int x, int y, Player player)
+        {
+            return player.X == x && player.Y == y;
+        }
+        public bool IsVisible(LevelElement element, Player player)
+        {
+
+            int dx = element.X - player.X;
+            int dy = element.Y - player.Y;
+            return dx * dx + dy * dy <= 25;
+        }
+
+        public void UpdateWalls(Player player)
+        {
+            foreach (Wall w  in elements.OfType<Wall>())
+                if (IsVisible(w, player))
+                    discoveredWalls.Add((w.X, w.Y));
+
+        }
+            
     }
 }

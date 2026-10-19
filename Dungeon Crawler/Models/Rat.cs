@@ -1,12 +1,18 @@
 ﻿using Dungeon_Crawler;
 using Dungeon_Crawler.Models;
 using System.Drawing;
+using System.Threading.Channels;
 using System.Xml.Linq;
 class Rat : Enemy
+    
 {
+
+
     private static readonly Random random = new Random();
 
     private LevelData levelData;
+    private Player player;
+
 
     public Rat(LevelData levelData)
     {
@@ -19,6 +25,11 @@ class Rat : Enemy
 
         AttackDice = new Dice(1, 6, 3);
         DefenceDice = new Dice(1, 6, 1);
+    }
+
+    public void SrtPlayer(Player player)
+    {
+        this.player = player;
     }
 
     public override void Update()
@@ -47,7 +58,11 @@ class Rat : Enemy
                 break;
         }
 
-        if (!levelData.WallAhead(newX, newY))
+        if (newX >=0 && newY >=0 &&
+            newX < Console.WindowWidth &&
+            newY < Console.WindowHeight&&
+            !levelData.IsOccupied(newX,newY)&&
+            !levelData.PlayerAhead(newX, newY, player))
         {
             X = newX;
             Y = newY;

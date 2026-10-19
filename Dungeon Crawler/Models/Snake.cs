@@ -9,6 +9,7 @@ namespace Dungeon_Crawler.Models
     class Snake : Enemy
 
     {
+
         private Player player;
         private LevelData levelData;
        
@@ -34,12 +35,15 @@ namespace Dungeon_Crawler.Models
 
         public override void Update()
         {
+            if (player == null)
+                return;
             int dx = player.X - X;
             int dy = player.Y - Y;
             double distance = Math.Sqrt(dx * dx + dy * dy);
 
-            if (distance >= 2)
+            if (distance > 2)
                 return;
+
             int newX = X;
             int newY = Y;
             if (Math.Abs(dx) >= Math.Abs (dy) && dx != 0) 

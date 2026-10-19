@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,6 +19,22 @@ namespace Dungeon_Crawler.Models
             Color = ConsoleColor.DarkGreen;
             AttackDice = new Dice(2, 6, 2);
             DefenceDice = new Dice(2, 6, 0);
+        }
+
+        public int Attack()
+        {
+            return AttackDice.Throw(); 
+        }
+
+        public void AttackEnemy(Enemy enemey)
+        {
+            enemey.TakeDamage(Math.Max(0, AttackDice.Throw() - enemey.DefenceDice.Throw()));
+            if (!enemey.IsDead())
+                HP -= Math.Max(0, enemey.AttackDice.Throw() - DefenceDice.Throw());
+            
+
+            
+
         }
     }
 
