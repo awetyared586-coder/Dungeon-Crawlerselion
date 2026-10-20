@@ -44,8 +44,10 @@ namespace Dungeon_Crawler.Models
             if (distance > 2)
                 return;
 
+
             int newX = X;
             int newY = Y;
+
             if (Math.Abs(dx) >= Math.Abs (dy) && dx != 0) 
             {
                 newX -= Math.Sign(dx);
@@ -56,20 +58,14 @@ namespace Dungeon_Crawler.Models
 
             }
 
-            if (newX >= 0 && newY >=0 && !levelData.WallAhead(newX, newY))
-                
-
-            {
+            if (newX < 0 || newY <= 0 ||
+                levelData.WallAhead(newX, newY) ||
+                levelData.IsOccupied(newX, newY))
+                return;
+            
                 X = newX;
-                Y = newY; 
-            }
-
-
-
-
-
-
-
+                Y = newY;
+                 
         }
     }
 

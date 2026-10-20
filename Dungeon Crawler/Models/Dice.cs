@@ -6,9 +6,11 @@ using System.Text;
 namespace Dungeon_Crawler.Models
 {
     internal class Dice
+
     {
-        
-       public int NumberOfDice { get; set; }
+    private static readonly Random random = new Random();
+
+    public int NumberOfDice { get; set; }
        public int SidePerDice { get; set; }
        public int Modifier { get; set; }
         
@@ -23,8 +25,7 @@ namespace Dungeon_Crawler.Models
 
         public int Throw()
         {
-            Random random = new Random();
-
+            
             int total = 0;
 
             for(int i =0; i < NumberOfDice; i++)

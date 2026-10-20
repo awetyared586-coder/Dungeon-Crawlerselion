@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -32,9 +31,11 @@ namespace Dungeon_Crawler.Models
             if (!enemey.IsDead())
                 HP -= Math.Max(0, enemey.AttackDice.Throw() - DefenceDice.Throw());
             
+        }
 
-            
-
+        public bool IsDead()
+        {
+            return HP <=0;
         }
     }
 

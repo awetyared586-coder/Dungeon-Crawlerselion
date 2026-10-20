@@ -22,6 +22,12 @@ namespace Dungeon_Crawler.Models
             return HP <= 0;
         }
 
+        public void AttackPlayer(Player player)
+        {
+            int damage = Math.Max(0, AttackDice.Throw() - player.DefenceDice.Throw());
+            player.HP -= damage;
+        }
+
     }
 
 

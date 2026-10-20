@@ -131,6 +131,28 @@ namespace Dungeon_Crawler
                     discoveredWalls.Add((w.X, w.Y));
 
         }
-            
+        public bool IsWallDiscoverd(Wall wall)
+        {
+            return discoveredWalls.Contains((wall.X, wall.Y));
+        }
+
+        public void DrawLevel(Player player)
+        {
+            UpdateWalls(player);
+            Console.Clear();
+
+            foreach (LevelElement e in elements)
+                if (e is Wall w && IsWallDiscoverd(w) ||
+                    e is Enemy && IsVisible(e, player))
+                    e.Draw();
+
+            player.Draw();
+
+        }
+
     }
+
+
+        
 }
+    

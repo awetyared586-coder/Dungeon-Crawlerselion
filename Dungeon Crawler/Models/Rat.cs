@@ -41,31 +41,32 @@ class Rat : Enemy
 
         switch (direction)
         {
-            case 0:
-                newX++;
-                break;
-
-            case 1:
-                newX--;
-                break;
-
-            case 2:
-                newY++;
-                break;
-
-            case 3:
-                newY--;
-                break;
+            case 0: newX++; break;
+            case 1: newX--; break;
+            case 2: newY++; break;
+            case 3: newY--; break;
         }
 
-        if (newX >=0 && newY >=0 &&
-            newX < Console.WindowWidth &&
-            newY < Console.WindowHeight&&
-            !levelData.IsOccupied(newX,newY)&&
-            !levelData.PlayerAhead(newX, newY, player))
+        if (newX < 0 || newY < 0 ||
+            newX >= Console.WindowWidth ||
+            newY >= Console.WindowHeight)
+        {
+            return;
+        }
+
+        if (levelData.PlayerAhead(newX, newY, player))
+        {
+            AttackPlayer(player);
+            return;
+        }
+
+        if (!levelData.IsOccupied(newX, newY))
         {
             X = newX;
             Y = newY;
-        }
+        }   
+        
+        
     }
 }
+   
